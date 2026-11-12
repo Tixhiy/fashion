@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+    
+    <div class="container">
+        
+    <div class="row">
+    {% if posts %}
+        {% for post in posts %}
+        <div class="col-md-4 mb-3">
+
+            <div class="card">
+              <a href="{{ url_for('page', id=post[0]) }}">
+               <div class="card-head-img" style="height: 500px; overflow: hidden;">  
+                 <img src="{{ url_for('static', filename='uploads/') }}{{ post[3] }}" class="card-img-top" alt="...">
+               </div>
+              </a> 
+              <div class="card-body">
+                <span>{{ post[4] }}</span>
+                <h5 class="card-title">{{ post[1] }}</h5>
+                <p class="card-text">{{ post[6] }}</p>         
+              </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Нет опубликованных записей</p>
+    {% endif %}
+    </div>
+    <hr>
+   
+    {% if count %}
+        <center>
+        {% for c in range(count) %}
+            <ul class="pagination" style="float: left;">
+                <li class="page-item"><a class="page-link" href="{{ url_for('index') }}?page={{ c+1 }}">{{ c+1 }}</a></li>
+            </ul>
+            
+        {% endfor %}
+        </center>
+    {% endif %}
+    
+    </div>
+
+{% endblock %}

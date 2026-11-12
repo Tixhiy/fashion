@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+        
+    <div class="container">
+        <h2>Редактирование записи: {{ post[0] }} </h2>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <input class="form-control mb-3" type="text" name="title" placeholder="title" required>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control mb-3" id="file" type="file" name="file" required>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control mb-3" type="date" name="date" value="{{ date }}" required>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control mb-3" type="text" name="price" placeholder="price" required>
+                </div>
+            </div>
+            <input type="text" name="current_file" value="{{ post[3] }}" style="display:none;">
+            <textarea class="form-control mb-3" name="description" placeholder="description" required>{{ post[2] }}</textarea>
+            
+            <button class="btn btn-primary" type="submit">Сохранить</button>
+        </form>
+
+        <span id="msg" style="color:red;"></span>
+
+    <hr>
+
+    <script>
+        console.log(1);
+        let file = document.getElementById("file");
+        let msg = document.getElementById("msg");
+        file.addEventListener("change", function(){
+            msg.innerText = "";
+            let name = file.files[0].type;
+            if (name.indexOf("image") == -1) {
+                //alert("ErrorFormat");
+                msg.innerText = "Недопустимый формат файла";
+                file.value = "";
+            }
+        });
+    </script>
+{% endblock %}

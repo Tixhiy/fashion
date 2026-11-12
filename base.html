@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Site</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<nav class="navbar bg-body-tertiary bg-dark" data-bs-theme="dark">
+  <div class="container">
+  	
+	  <div class="container">
+	    <a class="navbar-brand" href="{{ url_for('index') }}" style="color: lavender;">
+	      <img src="{{ url_for('static', filename='logo/') }}"style=" width: 40px; height: 40px;" class="d-inline-block align-text-top">
+	    </a>
+	  </div>
+
+  	
+  {% if session.user_id %}
+		
+		<a href="{{ url_for('logout') }}"style="text-decoration: none;">Выход</a>
+	{% else %}
+		<a href="{{ url_for('login') }}"style="text-decoration: none;">Вход</a>
+		<a href="#"style="text-decoration: none;">Регистрация</a>
+
+	{% endif %}
+	  <a href="{{ url_for('about') }}" style="text-decoration: none;">О нас</a>
+		<a href="#" style="text-decoration: none;">Заявки</a>
+    <form class="d-flex" role="search" method="POST" action="/search">
+      <input class="form-control me-2" type="search" name="search" placeholder="Поиск" aria-label="Поиск">
+        <button class="btn btn-outline-primary" type="submit">Поиск</button>
+    </form>
+  </div>
+</nav>
+<hr>
+{% block content %}
+{% endblock %}
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+        
+    <div class="container">
+        <h2>Профиль пользователя: {{ session.username }}</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <input class="form-control mb-3" type="text" name="title" placeholder="title" required>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control mb-3" id="file" type="file" name="file" required>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control mb-3" type="date" name="date" value="{{ date }}" required>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control mb-3" type="text" name="price" placeholder="price" required>
+                </div>
+            </div>
+            
+            <textarea class="form-control mb-3" name="description" placeholder="description" required></textarea>
+            
+            <button class="btn btn-primary" type="submit">Добавить запись</button>
+        </form>
+
+        <span id="msg" style="color:red;"></span>
+
+    <hr>
+    {% if posts %}
+    <table class="table table-secondary table-striped table-sm table-bordered border-dark">
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for p in posts %}
+        <tr>
+            <td>{{ p[0] }}</td>
+            <td>{{ p[1] }}</td>
+            <td><a href="{{ url_for('edit', id=p[0]) }}">редактировать</a></td>
+            <td><a href="{{ url_for('delete', id=p[0]) }}">удалить</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Кнопка-триггер модального окна -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Архив записей
+    </button>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Архив записей</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+          </div>
+          <div class="modal-body">
+            {% if archive %}
+                <ul>
+                {% for a in archive %}
+                    <li>{{ a[1] }} | <a href="{{ url_for('recovery', id=a[0]) }}">Восстановить</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Записи отсутствуют</p>
+            {% endif %}    
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+    
+    </div>
+   
+    <hr>
+    {% if files %}
+        {% for f in files %}
+            <p>{{ f[0] }} | <a href="{{ url_for('download_file', username=session.username, filename=f[0]) }}" download>скачать</a>
+            <a href="#" onclick="f(`{{ session.username }}`, `{{ f[0] }}`)">переименовать</a> 
+            <a href="{{ url_for('delete_file', user_id=session.user_id, filename=f[0], status=0) }}">удалить</a> </p>
+        {% endfor %}
+    {% else %}
+            <p>Нет загруженных файлов</p>
+    {% endif %}
+    <script>
+        console.log(1);
+        let file = document.getElementById("file");
+        let msg = document.getElementById("msg");
+        file.addEventListener("change", function(){
+            msg.innerText = "";
+            let name = file.files[0].type;
+            if (name.indexOf("image") == -1) {
+                //alert("ErrorFormat");
+                msg.innerText = "Недопустимый формат файла";
+                file.value = "";
+            }
+        });
+    </script>
+{% endblock %}

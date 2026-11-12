@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+    
+    <div class="container" style="margin-left:250px; margin-right: 250px ; background: lavender; width: 70%; height: 700px;">
+        <div class="container" style="width: 400px; align: center; float: left;">
+        
+            {% if post %}
+                
+                <h2>{{ post[1] }}</h2>
+
+                <img src="{{ url_for('static', filename='uploads/') }}{{ post[3] }}" style="width: 350px;">
+                <p>{{ post[6] }}</p>
+                <div class="bn" style="margin: 20px;">
+                    <button type="button" class="btn btn-primary btn-sm">XS</button>
+                    <button type="button" class="btn btn-primary btn-sm">S</button>
+                    <button type="button" class="btn btn-primary btn-sm">M</button>
+                    <button type="button" class="btn btn-primary btn-sm">L</button>
+                </div>
+                <button type="button" class="btn btn-info">В корзину</button>
+                <button type="button" class="btn btn-success">Купить</button>
+                
+              
+            {% else %}
+                <p>Нет опубликованных записей</p>
+            {% endif %}
+        </div>
+        <p style="margin-top: 100px; width: 70%;">{{ post[2] }}</p>
+        
+    </div>
+{% endblock %}
